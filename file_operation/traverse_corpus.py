@@ -1,7 +1,6 @@
-import npl_native_mfm.file_operation
 import os
 
-from npl_native_mfm.file_operation.file_operation import read_corpus
+from file_operation.file_operation import read_corpus
 
 
 def traverse_corpus(file_path):
