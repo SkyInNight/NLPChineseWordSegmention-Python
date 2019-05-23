@@ -27,7 +27,7 @@ def maximum_string_matching(input_lines, corpus_max_length):
                 current_corpus = open(key, 'r', encoding='UTF-8')
                 lines = current_corpus.readlines()
                 for index in range(len(lines)):
-                    lines[index] = re.sub("[A-Za-z0-9\!\%\[\]\,\。\t\n ]", "", lines[index])
+                    lines[index] = re.sub("[0-9\n ]", "", lines[index])
                 current_compare_str = input_line[current_input_subscript:current_input_subscript + current_max_length]
                 # 3. 实现当前匹配串在当前语料库中进行比较，如果匹配成功则结束此串的比较，如果匹配失败，则去除匹配串末尾进行下一轮比较
                 while current_max_length > 0:

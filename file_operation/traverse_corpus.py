@@ -2,6 +2,8 @@ import os
 
 from file_operation.file_operation import read_corpus
 
+__output_file__ = "../temp/"
+
 
 def traverse_corpus(file_path):
     corpus_lengths = {}
@@ -13,11 +15,10 @@ def traverse_corpus(file_path):
         # 判断如果是txt文件
         if os.path.splitext(new_dir)[1] == ".txt":
             # 读文件
-            corpus_lengths[new_dir] = read_corpus(new_dir)
+            corpus_lengths[__output_file__ + os.path.splitext(os.path.split(new_dir)[1])[0] + '.temp'] = read_corpus(new_dir)
             pass
         else:
             # 递归遍历文件夹
             print(new_dir)
             corpus_lengths.update(traverse_corpus(new_dir))
     return corpus_lengths
-
