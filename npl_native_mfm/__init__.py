@@ -3,11 +3,15 @@
 语料库使用清华提供的源，文本类型为txt，路径为：../chinese_corpus/tsinghua/*
 """
 from file_operation.traverse_corpus import traverse_corpus
-from npl_native_mfm.maximum_string_matching import  maximum_string_matching
+from npl_native_mfm.maximum_string_matching import maximum_string_matching
 
 __preprocessing_file_path__ = "../input_file/input.txt"
+# __preprocessing_file_path__ = "../input_file/pku_training.txt"
+# __preprocessing_file_path__ = "../input_file/test.txt"
 __corpus_path__ = "../chinese_corpus/"
 __use__fast__ = True
+__output_file_path__ = '../output_file/output.txt'
+
 
 # 1. 先获取输入数据的文件
 def open_input_file():
@@ -45,8 +49,10 @@ def match_words():
 # main函数
 def main():
     output = match_words()
+    file = open(__output_file_path__, 'w+', encoding='UTF-8')
     for str_output in output:
-        print(str_output + "|", end="")
+        # print(str_output + "|", end="")
+        file.write(str_output + "|")
 
 
 if __name__ == '__main__':

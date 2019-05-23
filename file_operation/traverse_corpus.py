@@ -13,8 +13,9 @@ def traverse_corpus(file_path, use_fast):
     for path in path_dir:
         # 将文件名补充完整
         new_dir = os.path.join(file_path, path)
+        file_type = os.path.splitext(new_dir)[1]
         # 判断如果是txt文件
-        if os.path.splitext(new_dir)[1] == ".txt":
+        if file_type == ".txt" or file_type == ".xls":
             # 读文件
             length = read_corpus(new_dir, use_fast)
             if max_length < length:
