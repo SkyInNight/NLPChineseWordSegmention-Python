@@ -7,7 +7,7 @@ from npl_native_mfm.maximum_string_matching import  maximum_string_matching
 
 __preprocessing_file_path__ = "../input_file/input.txt"
 __corpus_path__ = "../chinese_corpus/"
-
+__use__fast__ = True
 
 # 1. 先获取输入数据的文件
 def open_input_file():
@@ -19,12 +19,13 @@ def open_input_file():
             line = line[0:subscript]
         # 调试输出line
         # print(len(line))
+    file.close()
     return lines
 
 
 # 2. 遍历所有的语料库文件并获取每一个语料库中最长的字符数组
 def get_max_length():
-    max_length = traverse_corpus(__corpus_path__)
+    max_length = traverse_corpus(__corpus_path__, __use__fast__)
     return max_length
 
 
@@ -37,7 +38,7 @@ def match_words():
     # 获取字典库中的最大长度子串
     corpus_max_length = get_max_length()
     # 3.1 一个字符串在一个语料库中进行匹配
-    output_list = maximum_string_matching(input_lines, corpus_max_length)
+    output_list = maximum_string_matching(input_lines, corpus_max_length, __use__fast__)
     return output_list
 
 
