@@ -42,7 +42,8 @@ def maximum_string_matching(input_lines, corpus_max_length, use_fast):
                         lines[index] = re.sub("[0-9\n ]", "", lines[index])
                         hash_table[lines[index]] = lines[index]
                     current_corpus.close()
-                    current_compare_str = input_line[current_input_subscript:current_input_subscript + current_max_length]
+                    current_compare_str = input_line[
+                                          current_input_subscript:current_input_subscript + current_max_length]
                     # 3. 实现当前匹配串在当前语料库中进行比较，如果匹配成功则结束此串的比较，如果匹配失败，则去除匹配串末尾进行下一轮比较
                     while current_max_length > 0:
                         # 突然意识到，因为python中的字典就是hash表构建的，所以这里可以直接借用字典进行查找
@@ -105,3 +106,50 @@ def maximum_string_matching(input_lines, corpus_max_length, use_fast):
                 current_input_subscript += 1
     return output_list
 
+
+def maximum_string_matching_rev(input_lines, corpus_max_length):
+    output_list = []
+    hash_table = {}
+    # 将语料库全部加载到内存中
+    current_corpus = open("../temp/corpus.temp", 'r', encoding='UTF-8')
+    lines = current_corpus.readlines()
+    for index in range(len(lines)):
+        lines[index] = re.sub("[0-9\n ]", "", lines[index])
+        hash_table[lines[index]] = lines[index]
+    current_corpus.close()
+    # 存在多行输入值时，需要进行逐行进行分词
+    for input_line in input_lines:
+        # 当前输入文件的开始匹配位置
+        current_input_subscript = len(input_line)
+        # 1. 实现对整个字符串从左到右的遍历，一直到文件末尾停止
+        while current_input_subscript > 0:
+            # 得到当前语料库中最大词句的长度
+            current_max_length = corpus_max_length['../temp/corpus.temp']
+            # 为了防止判断溢出，所以这里进行了保护
+            if current_input_subscript - current_max_length <= 0:
+                current_max_length = current_input_subscript
+            current_compare_str = input_line[current_input_subscript - current_max_length:current_input_subscript]
+            # 3. 实现当前匹配串在当前语料库中进行比较，如果匹配成功则结束此串的比较，如果匹配失败，则去除匹配串末尾进行下一轮比较
+            while current_max_length > 0:
+                # 4. 遍历语料库中的词语，和当前匹配文本进行比较
+                flag_compare = hash_table.__contains__(current_compare_str)
+
+                # 如果在当前语料库中成功找到匹配项则可以退出当前匹配
+                if flag_compare:
+                    # 将读写下标向左移动当前判断字符串长度
+                    current_input_subscript -= current_max_length
+                    print(current_max_length)
+                    print(current_compare_str)
+                    # 将当前分词加入输出列表中
+                    output_list.append(current_compare_str)
+                    break
+                else:
+                    # 将匹配字符串左侧减少一个字符位
+                    current_max_length -= 1
+
+                current_compare_str = current_compare_str[current_input_subscript - current_max_length:]
+            # 如果匹配到只有一个字符，那这个字符一定是孤立的
+            if current_max_length == 0:
+                output_list.append(input_line[current_input_subscript])
+                current_input_subscript -= 1
+    return output_list

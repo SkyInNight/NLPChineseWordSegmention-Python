@@ -3,14 +3,16 @@
 语料库使用清华提供的源，文本类型为txt，路径为：../chinese_corpus/tsinghua/*
 """
 from file_operation.traverse_corpus import traverse_corpus
-from npl_native_mfm.maximum_string_matching import maximum_string_matching
+from npl_native_mfm.maximum_string_matching import maximum_string_matching, maximum_string_matching_rev
+import time
 
-__preprocessing_file_path__ = "../input_file/input.txt"
-# __preprocessing_file_path__ = "../input_file/pku_training.txt"
+# __preprocessing_file_path__ = "../input_file/input.txt"
+__preprocessing_file_path__ = "../input_file/pku_training.txt"
 # __preprocessing_file_path__ = "../input_file/test.txt"
 __corpus_path__ = "../chinese_corpus/"
-__use__fast__ = True
+__use__fast__ = False
 __output_file_path__ = '../output_file/output.txt'
+__is_rev__ = False
 
 
 # 1. 先获取输入数据的文件
@@ -42,13 +44,19 @@ def match_words():
     # 获取字典库中的最大长度子串
     corpus_max_length = get_max_length()
     # 3.1 一个字符串在一个语料库中进行匹配
-    output_list = maximum_string_matching(input_lines, corpus_max_length, __use__fast__)
+    if not __is_rev__:
+        output_list = maximum_string_matching(input_lines, corpus_max_length, __use__fast__)
+    else:
+        output_list = maximum_string_matching_rev(input_lines, corpus_max_length)
     return output_list
 
 
 # main函数
 def main():
+    start = time.clock()
     output = match_words()
+    end = time.clock()
+    print("总共耗时：", end - start, "s")
     file = open(__output_file_path__, 'w+', encoding='UTF-8')
     for str_output in output:
         # print(str_output + "|", end="")
